@@ -1,0 +1,91 @@
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    #timer {
+      font-size: 48px;
+      color: green;
+    }
+
+    #input {
+      width: 200px;
+      height: 40px;
+      font-size: 24px;
+    }
+
+    #start {
+      width: 100px;
+      height: 50px;
+      font-size: 18px;
+      background-color: lightgreen;
+      border: none;
+      cursor: pointer;
+    }
+
+    #start:hover {
+      background-color: green;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Timer</h1>
+  <p>Enter the time in hh:mm:ss format and click start</p>
+  <input id="input" type="text" placeholder="00:00:00">
+  <button id="start">Start</button>
+  <p id="timer">00:00:00</p>
+  <script>
+    
+    var input = document.getElementById("input");
+    var start = document.getElementById("start");
+    var timer = document.getElementById("timer");
+
+    
+    var interval; 
+    var seconds; 
+    var alarm = new Audio("hasnain.wav"); 
+
+    start.addEventListener("click", function() {
+
+      if (input.value.match(/^\d{2}:\d{2}:\d{2}$/)) {
+        var parts = input.value.split(":");
+        seconds = parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
+
+        clearInterval(interval);
+
+        interval = setInterval(updateTimer, 1000);
+      } else {
+        alert("Please enter a valid time in hh:mm:ss format");
+      }
+    });
+
+    function updateTimer() {
+      if (seconds == 0) {
+
+        clearInterval(interval);
+
+        alarm.play();
+        alert("Time's up!");
+
+        timer.innerHTML = "00:00:00";
+      } else {
+        seconds--;
+
+        var hours = Math.floor(seconds / 3600);
+        var minutes = Math.floor((seconds % 3600) / 60);
+        var secondsLeft = seconds % 60;
+
+        if (hours < 10) hours = "0" + hours;
+        if (minutes < 10) minutes = "0" + minutes;
+        if (secondsLeft < 10) secondsLeft = "0" + secondsLeft;
+
+        timer.innerHTML = hours + ":" + minutes + ":" + secondsLeft;
+      }
+    }
+  </script>
+</body>
+</html>
